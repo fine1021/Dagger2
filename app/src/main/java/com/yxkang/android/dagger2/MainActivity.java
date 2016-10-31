@@ -12,18 +12,16 @@ import com.yxkang.android.dagger2.module.MainActivityModule;
 
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity implements MainContract.View {
+public class MainActivity extends BaseActivity<MainActivityComponent> implements MainContract.View {
 
     @Inject
     MainPresenter mainPresenter;
-
-    private MainActivityComponent mainActivityComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getMainActivityComponent().inject(this);
+        getComponentProvider().get().inject(this);
         mainPresenter.onAttachedView(this);
     }
 
@@ -38,18 +36,12 @@ public class MainActivity extends BaseActivity implements MainContract.View {
         super.onDestroy();
     }
 
-    protected MainActivityComponent getMainActivityComponent() {
-        if (mainActivityComponent == null) {
-            mainActivityComponent = DaggerMainActivityComponent.builder()
-                    .applicationComponent(getApplicationComponent())
-                    .mainActivityModule(getActivityModule())
-                    .build();
-        }
-        return mainActivityComponent;
-    }
-
-    protected MainActivityModule getActivityModule() {
-        return new MainActivityModule(this);
+    @Override
+    protected MainActivityComponent createActivityComponent() {
+        return DaggerMainActivityComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .mainActivityModule(new MainActivityModule(this))
+                .build();
     }
 
 }

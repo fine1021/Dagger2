@@ -13,7 +13,7 @@ public class DatabaseManager {
     private Context context;
 
     @Inject
-    public DatabaseManager(Context context) {
+    DatabaseManager(Context context) {
         this.context = context;
     }
 }

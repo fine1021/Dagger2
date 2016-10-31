@@ -1,9 +1,9 @@
 package com.yxkang.android.dagger2.module;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.yxkang.android.dagger2.annotation.ActivityScope;
-import com.yxkang.android.dagger2.util.DatabaseManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,7 +22,7 @@ public class MainActivityModule {
 
     @Provides
     @ActivityScope
-    DatabaseManager provideDatabaseManager() {
-        return new DatabaseManager(activity);
+    Context provideContext() {
+        return activity;
     }
 }
